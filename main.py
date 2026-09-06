@@ -11,6 +11,7 @@ testsave = True
 testfps = False
 testpillary = True
 testbuy = True
+testequip = True
 #DISPLAY
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 1000
@@ -63,7 +64,9 @@ defult_data = {
     'mode': 'Normal',
     'coffeebeans': 0,
     'item1': False,
-    'item1equipped': False
+    'item1equipped': False,
+    'item2': False,
+    'item2equipped': False
 }
 def save(datasave):
     with open('Saves/saves.json', 'w') as file:
@@ -212,6 +215,7 @@ shopspeed = 1
 pillarload = pillarobj()
 highscore['highscore'] = str(game_data['highscore'])
 equip1img = equipimg
+equip2img = equipimg
 #gets width     of the backround image 
 backround_width = backround.get_width()
 #sets the backround x position
@@ -231,7 +235,7 @@ def rollpillary():
         first_pillary = random.randint(-280, -70)
         second_pillary = random.randint(-280, -70)
         third_pillary = random.randint(-280, -70)
-if game_data['mode'] == 'easy':
+if game_data['mode'] == 'ezasy':
     scrollspeed = 1
 if game_data['mode'] == 'normal':
     scrollspeed = 2
@@ -288,11 +292,15 @@ while running:
         display.blit(shopmilkpillarimg, (milkpillarx, 428))
         if game_data['item1'] == True:
             display.blit(equip1img, (90, 340))
+        if game_data['item2'] == True:
+            display.blit(equip2img, (90, 555))
         display.blit(moneyimg, (5, 5))
         money_surface = money_font.render(str(game_data['coffeebeans']), True, gamecolor)
         item1_surface = moneysmall_font.render('50', True, gamecolor)
+        item2_surface = moneysmall_font.render('50', True, gamecolor)
         display.blit(money_surface, (75, 2))
         display.blit(item1_surface, (155, 338))
+        display.blit(item2_surface, (155, 553))
         shophome_rect = pygame.Rect((shophome['x'], shophome['y']), (shophome['width'], shophome['height']))
         equip1_rect = pygame.Rect((equip1['x'], equip1['y']), (equip1['width'], equip1['height']))
         equip2_rect = pygame.Rect((equip2['x'], equip2['y']), (equip2['width'], equip2['height']))
@@ -312,7 +320,8 @@ while running:
                             game_data['item1'] = True
                             item1equipvar = True
                             equip1img = equipimg
-                            print(game_data['item1'])
+                            if testequip:
+                                print(game_data['item1'])
                     if game_data['item1'] == True:
                         if item1equipvar:
                             equipimg = equipimg
@@ -324,7 +333,26 @@ while running:
                             else:
                                 equip1img = equippedimg
                                 game_data['item1equipped'] = True
-                print('click')
+                if equip2_rect.collidepoint(mousepos):
+                    if game_data['item2'] == False:
+                        if game_data['coffeebeans'] == 50 or game_data['coffeebeans'] >= 50:
+                            game_data['coffeebeans'] = int(game_data['coffeebeans']) - 50
+                            game_data['item2'] = True
+                            item2equipvar = True
+                            equip2img = equipimg
+                            if testequip:
+                                print(game_data['item2'])
+                        if game_data['item2'] == True:
+                            if item2equipvar:
+                                equipimg = equipimg
+                                item2equipvar = False
+                            else:
+                                if equip2img == equippedimg:
+                                    equip2img = equipimg
+                                    game_data['item2equipped'] = False
+                                else:
+                                    equip2img = equippedimg
+                                    game_data['item2equipped'] = True
     if gamestatus == 1:
         if highscore['highscore'] == '':
             highscore['highscore'] = '0'
