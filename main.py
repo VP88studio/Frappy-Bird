@@ -55,6 +55,7 @@ milkbirdold = pygame.image.load('Assets/milkbird.png')
 milkbirdimg = pygame.transform.scale(milkbirdold, (120, 80))
 milkpillarold = pygame.image.load('Assets/milkpillar.png')
 milkpillarimg = pygame.transform.scale(milkpillarold, (400, 600))
+milkpillarflipimg = pygame.transform.rotate(milkpillarimg, (180))
 shopmilkpillarold = pygame.image.load('Assets/milkpillar.png')
 shopmilkpillarimg = pygame.transform.scale(milkpillarold, (70, 120))
 BLUE = 0,0,255
@@ -266,6 +267,12 @@ while running:
         birdimgload = milkbirdimg
     if game_data['item1equipped'] == False:
         birdimgload = birdimg
+    if game_data['item2equipped']:
+        pillarimgload = milkpillarimg
+        pillarimgflipload = milkpillarflipimg
+    if game_data['item2equipped'] == False:
+        pillarimgload = pillar
+        pillarimgflipload = pillarflip
     #Modes
     if scrollspeed == 1:
         mode = 'Mode: Easy'
@@ -342,17 +349,17 @@ while running:
                             equip2img = equipimg
                             if testequip:
                                 print(game_data['item2'])
-                        if game_data['item2'] == True:
-                            if item2equipvar:
-                                equipimg = equipimg
-                                item2equipvar = False
+                    if game_data['item2'] == True:
+                        if item2equipvar:
+                            equipimg = equipimg
+                            item2equipvar = False
+                        else:
+                            if equip2img == equippedimg:
+                                equip2img = equipimg
+                                game_data['item2equipped'] = False
                             else:
-                                if equip2img == equippedimg:
-                                    equip2img = equipimg
-                                    game_data['item2equipped'] = False
-                                else:
-                                    equip2img = equippedimg
-                                    game_data['item2equipped'] = True
+                                equip2img = equippedimg
+                                game_data['item2equipped'] = True
     if gamestatus == 1:
         if highscore['highscore'] == '':
             highscore['highscore'] = '0'
