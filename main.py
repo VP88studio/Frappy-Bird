@@ -42,6 +42,8 @@ backroundflip = pygame.transform.rotate(backround, 180)
 #Home Screen
 homeold = pygame.image.load('Assets/home.png')
 homeimg = pygame.transform.scale(homeold, (750, 1000))
+themesold = pygame.image.load('Assets/themes.png')
+themesimg = pygame.transform.scale(themesold, (170, 85))
 #Shop
 shopold = pygame.image.load('Assets/shop.png')
 shopimg = pygame.transform.scale(shopold, (750, 1000))
@@ -58,6 +60,10 @@ milkpillarimg = pygame.transform.scale(milkpillarold, (400, 600))
 milkpillarflipimg = pygame.transform.rotate(milkpillarimg, (180))
 shopmilkpillarold = pygame.image.load('Assets/milkpillar.png')
 shopmilkpillarimg = pygame.transform.scale(milkpillarold, (70, 120))
+milkbackroundold = pygame.image.load('Assets/milkbackround.png')
+milkbackroundimg = pygame.transform.scale(milkbackroundold, (1049, 1499))
+milkbackroundimgflip = pygame.transform.rotate(milkbackroundimg, (180))
+
 BLUE = 0,0,255
 #Json Save File
 defult_data = {
@@ -91,6 +97,8 @@ def movesave():
     defult_data['mode'] = modevar
     defult_data['coffeebeans'] = game_data['coffeebeans']
     defult_data['item1'] = game_data['item1']
+    defult_data['item1equipped'] = game_data['item1equipped']
+    defult_data['item2equipped'] = game_data['item2equipped']
     if tesths:
         print(f'HS: {int(highscore['highscore'])}')
         print(f"Big Boy HS: {defult_data['highscore']}")
@@ -236,7 +244,7 @@ def rollpillary():
         first_pillary = random.randint(-280, -70)
         second_pillary = random.randint(-280, -70)
         third_pillary = random.randint(-280, -70)
-if game_data['mode'] == 'ezasy':
+if game_data['mode'] == 'easy':
     scrollspeed = 1
 if game_data['mode'] == 'normal':
     scrollspeed = 2
@@ -251,6 +259,8 @@ print(highscore['highscore'])
 pillarimgload = pillar
 pillarimgflipload = pillarflip
 birdimgload = birdimg
+backroundimgload = milkbackroundimg
+backroundimgflipload = milkbackroundimgflip
 
 if testbuy:
     print(game_data['item1'])
@@ -301,6 +311,7 @@ while running:
             display.blit(equip1img, (90, 340))
         if game_data['item2'] == True:
             display.blit(equip2img, (90, 555))
+        display.blit()
         display.blit(moneyimg, (5, 5))
         money_surface = money_font.render(str(game_data['coffeebeans']), True, gamecolor)
         item1_surface = moneysmall_font.render('50', True, gamecolor)
@@ -375,6 +386,7 @@ while running:
             highscorex = 75
         display.blit(hs_surface, (highscorex, 820))
         display.blit(mode_surface, (modex, 10))
+        display.blit(themesimg, (525, 350))
         shop_rect = pygame.Rect((shopbutton['x'], shopbutton['y']), (shopbutton['width'], shopbutton['height']))
         start_rect = pygame.Rect((startbutton['x'], startbutton['y']), (startbutton['width'], startbutton['height']))
         easy_rect = pygame.Rect((easybutton['x'], easybutton['y']), (easybutton['width'], easybutton['height']))
@@ -528,10 +540,10 @@ while running:
         if backroundx <= -backround_width:
             backroundx = 0
         #this displays the backround images
-        display.blit(backround, (backroundx, 0))
+        display.blit(backroundimgload, (backroundx, 0))
         #this displays the second image by making the x position backroundx + the width of the first backround
         #idk how i didnt think of this in the 3 days i spent on this problem
-        display.blit(backround, (backroundx + backround_width, 0))
+        display.blit(backroundimgload, (backroundx + backround_width, 0))
         display.blit(birdimgload, (birdx, birdy))
         pillarload.draw()
         if testpillar == True:
